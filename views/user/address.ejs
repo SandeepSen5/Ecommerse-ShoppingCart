@@ -935,7 +935,7 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            window.location.replace("/user/order-Placed");
+                            window.location.replace("/user/order-placed");
                         });
                     } else if (response.walletSuccess == true) {
                         Swal.fire({
@@ -1019,7 +1019,7 @@
                     if (response.status) {
                         alert('payment success')
                         // hideLoader()
-                        location.href = '/user/order-Placed'
+                        location.href = '/user/order-placed'
                     } else {
                         // alert("payment failed")
                         // hideLoader()
