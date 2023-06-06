@@ -864,7 +864,7 @@ exports.getcartproduct = async (req, res) => {
 
         const cartCount = req.cartCount;
 
-        res.render("user/Cart", {
+        res.render("user/cart", {
             cartItems,
             user,
             userId,
@@ -1615,7 +1615,7 @@ exports.orderview = async (req, res) => {
         res.locals.orders = orders;
     }
 
-    res.render("user/Order-View", {
+    res.render("user/order-view", {
         cartCount,
         user: req.session.user,
     });
