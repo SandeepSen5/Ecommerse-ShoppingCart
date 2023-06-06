@@ -14,14 +14,11 @@ const bcrypt = require('bcryptjs')
 const methodOverride = require('method-override');
 const dotenv = require("dotenv").config();
 
-
-
 var app = express();
-
-
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
+var usersHome = require('./routes/users');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -66,6 +63,7 @@ app.use(function (req, res, next) {
 
 app.use('/admin', adminRouter);
 app.use('/user', usersRouter);
+app.use('/', usersHome);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
