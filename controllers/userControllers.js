@@ -863,7 +863,6 @@ exports.getcartproduct = async (req, res) => {
         }
 
         const cartCount = req.cartCount;
-
         res.render("user/cart", {
             cartItems,
             user,
