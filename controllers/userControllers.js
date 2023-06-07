@@ -1570,7 +1570,7 @@ exports.orderPlacedCod = (req, res) => {
     let user = req.session.user;
     const cartCount = req.cartCount;
     try {
-        res.render('user/OrderPlacedCod', { other: false, admin: false, user, cartCount });
+        res.render('user/orderPlacedCod', { other: false, admin: false, user, cartCount });
     } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');

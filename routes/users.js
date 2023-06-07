@@ -79,6 +79,7 @@ router.get('/order-cancelled-list', usermiddleware.setNoCache, usermiddleware.is
 router.get('/order-returned-list', usermiddleware.setNoCache, usermiddleware.isLogin, userController.listOfReturnedOrder)
 router.get('/invoice', usermiddleware.setNoCache, usermiddleware.isLogin, userController.cartCount, userController.invoice)
 
+
 //payment controller
 router.post('/verify-payment', userController.paymentVerify)
 router.get('/payment-failed', userController.cartCount, userController.paymentFailed)
@@ -86,6 +87,5 @@ router.get('/user-wallet', usermiddleware.setNoCache, usermiddleware.isLogin, us
 
 //order report
 router.get('/order-invoice', usermiddleware.setNoCache, usermiddleware.isLogin, userController.cartCount, userController.orderinvoice)
-
 module.exports = router;
 
