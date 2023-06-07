@@ -492,7 +492,6 @@ exports.postuserprofile = async (req, res) => {
     const userId = req.session.userid;
     const { name, email, phone } = req.body;
     const emailexist = await User.findOne({ email: req.body.email })
-
     try {
         if (emailexist && emailexist._id.toString() !== userId) {
             res.json({ success: false, message: "Email Already Registered" })
@@ -542,8 +541,9 @@ exports.passwordprofile = async (req, res) => {
     try {
         let verifiedUser = await User.findOne({ _id: req.session.userid });
         console.log(req.body.password, "ssssssssssssssssss");
-        const status = await bcrypt.compare(req.body.password, verifiedUser.password);
-        if (req.body.password.length < 6) {
+        console.log(req.body.password1, "ssssssssssssssssss");
+        let status = await bcrypt.compare(req.body.password, verifiedUser.password);
+        if (req.body.password1.length < 6) {
             status = false;
         }
         if (status) {
@@ -551,7 +551,7 @@ exports.passwordprofile = async (req, res) => {
             let hashPassword = await bcrypt.hash(req.body.password1, 10);
             await User.findOneAndUpdate(
                 { _id: req.session.userid }, // filter object
-                { password: hashPassword } // update object
+                { password: hashPassword, password1: hashPassword } // update object
             );
             console.log("huihadsfasdfasd");
             res.json({ success: true });
@@ -679,7 +679,7 @@ exports.kids = async (req, res) => {
     let user = req.session.user;
     const cartCount = req.cartCount;
     let banners = await Banner.find({});
-    let products = await Product.find({ producttype: "Kids" ,deleted: false  }).maxTimeMS(30000);
+    let products = await Product.find({ producttype: "Kids", deleted: false }).maxTimeMS(30000);
     console.log(products);
     if (req.session.user) {
         res.render('user/kids', { admin: false, products, user, cartCount, banners })
@@ -693,7 +693,7 @@ exports.womens = async (req, res) => {
     let user = req.session.user;
     const cartCount = req.cartCount;
     let banners = await Banner.find({});
-    let products = await Product.find({ producttype: "Womens",deleted: false  }).maxTimeMS(30000);
+    let products = await Product.find({ producttype: "Womens", deleted: false }).maxTimeMS(30000);
     console.log(products);
     if (req.session.user) {
         res.render('user/womens', { admin: false, products, user, cartCount, banners })
