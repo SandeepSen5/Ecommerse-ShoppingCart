@@ -15,7 +15,7 @@ router.get('/', userController.cartCount, userController.userindex);
 router.get('/user-index', usermiddleware.setNoCache, usermiddleware.isLogin, userController.cartCount, userController.getuserindex);
 router.get('/mens', userController.cartCount, usermiddleware.setNoCache, userController.mens)
 router.get('/kids', userController.cartCount, usermiddleware.setNoCache, userController.kids)
-router.get('/Womens', userController.cartCount, usermiddleware.setNoCache, userController.womens)
+router.get('/womens', userController.cartCount, usermiddleware.setNoCache, userController.womens)
 
 
 //user controller
@@ -34,6 +34,7 @@ router.post('/user-loginootpverify', userController.postloginootpverify)
 router.get('/user-otpverify', userController.userotpverify)
 router.post('/user-otpverify', userController.postuserotpverify)
 router.get('/user-resendotp', userController.resendotp)
+router.get('/user-signupresendotp', userController.signupresendotp)
 
 
 //userDetails Controller

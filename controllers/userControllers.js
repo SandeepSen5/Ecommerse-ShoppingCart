@@ -263,6 +263,7 @@ exports.usersignup = function (req, res) {
     }
 }
 
+
 exports.postusersignup = async function (req, res) {
     console.log("sign");
     const { name, email, phone, password, password1 } = req.body;
@@ -411,14 +412,14 @@ exports.postloginootpverify = async (req, res) => {
 
 
 exports.userotpverify = (req, res) => {
-    res.render('user/user-loginootpverify', { other: true })
+    res.render('user/user-otpverify', { other: true })
 }
 
 
 exports.postuserotpverify = async (req, res) => {
     let errors = [];
     const otp = req.body.code;
-    const name = req.session.name
+    const name = req.session.name;
     const email = req.session.email;
     const phone = req.session.phone;
     const password = req.session.password;
@@ -434,8 +435,11 @@ exports.postuserotpverify = async (req, res) => {
                 password1: hashedPassword
             });
             await newUser.save();
-            req.session.user = name;
-            req.session.user.loggedIn = true;
+            let user = await User.findOne({ email: email }).maxTimeMS(20000);
+            req.session.loggedIn = true;
+            req.session.user = user.name;
+            req.session.userid = user._id;
+
             const newWallet = new Wallet({
                 userId: newUser._id,
             })
@@ -459,18 +463,40 @@ exports.resendotp = async (req, res) => {
     try {
         // Send the OTP to the user's number (twilio)
         await client.verify.v2.services(verifySid).verifications.create({ to: `+91${number}`, channel: "sms" });
+        res.redirect('/user/user-loginootpverify')
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Failed to send OTP. Please try again later.");
+    }
+}
+
+
+
+exports.signupresendotp = async (req, res) => {
+    const number = req.session.phone;
+    try {
+        // Send the OTP to the user's number (twilio)
+        await client.verify.v2.services(verifySid).verifications.create({ to: `+91${number}`, channel: "sms" });
         res.redirect('/user/user-otpverify')
     } catch (error) {
         console.log(error);
         res.status(500).send("Failed to send OTP. Please try again later.");
     }
-
 }
 
 
+
+
+
+
+
+
+
 exports.userlogout = (req, res) => {
-    req.session.user = null;
+    
     req.session.loggedIn = false;
+    req.session.user = null;
+    req.session.userid = null;
     res.redirect('/user/user-login')
 }
 
@@ -667,11 +693,8 @@ exports.mens = async (req, res) => {
     let banners = await Banner.find({});
     let products = await Product.find({ producttype: "Mens", deleted: false }).maxTimeMS(30000);
     console.log(products);
-    if (req.session.user) {
-        res.render('user/mens', { admin: false, products, user, cartCount, banners })
-    } else {
-        res.redirect('/user/user-login')
-    }
+    res.render('user/mens', { admin: false, products, user, cartCount, banners })
+
 }
 
 
@@ -681,11 +704,7 @@ exports.kids = async (req, res) => {
     let banners = await Banner.find({});
     let products = await Product.find({ producttype: "Kids", deleted: false }).maxTimeMS(30000);
     console.log(products);
-    if (req.session.user) {
-        res.render('user/kids', { admin: false, products, user, cartCount, banners })
-    } else {
-        res.redirect('/user/user-login')
-    }
+    res.render('user/kids', { admin: false, products, user, cartCount, banners })
 }
 
 
@@ -695,11 +714,8 @@ exports.womens = async (req, res) => {
     let banners = await Banner.find({});
     let products = await Product.find({ producttype: "Womens", deleted: false }).maxTimeMS(30000);
     console.log(products);
-    if (req.session.user) {
-        res.render('user/womens', { admin: false, products, user, cartCount, banners })
-    } else {
-        res.redirect('/user/user-login')
-    }
+    res.render('user/womens', { admin: false, products, user, cartCount, banners })
+
 }
 
 
